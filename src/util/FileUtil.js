@@ -15,13 +15,14 @@ class FileUtil
     * Returns an array of all directories found from walking the directory tree provided.
     *
     * @param {string}   dir - Directory to walk.
+    * @param {Array}    [skipDir] - An array of directory names to skip walking.
     * @param {Array}    [results] - Output array.
     *
     * @returns {Promise<Array>}
     */
-   static async getDirList(dir = '.', results = [])
+   static async getDirList(dir = '.', skipDir = [], results = [])
    {
-      for await (const p of FileUtil.walkDir(dir))
+      for await (const p of FileUtil.walkDir(dir, skipDir))
       {
          results.push(path.resolve(p));
       }
@@ -33,13 +34,14 @@ class FileUtil
     * Returns an array of all files found from walking the directory tree provided.
     *
     * @param {string}   dir - Directory to walk.
+    * @param {Array}    [skipDir] - An array of directory names to skip walking.
     * @param {Array}    [results] - Output array.
     *
     * @returns {Promise<Array>}
     */
-   static async getFileList(dir = '.', results = [])
+   static async getFileList(dir = '.', skipDir = [], results = [])
    {
-      for await (const p of FileUtil.walkFiles(dir))
+      for await (const p of FileUtil.walkFiles(dir, skipDir))
       {
          results.push(path.resolve(p));
       }
@@ -75,7 +77,7 @@ class FileUtil
     * A generator function that walks the local file tree.
     *
     * @param {string}   dir - The directory to start walking.
-    * @param {Array}    skipDir - An array of directory names to skip walking.
+    * @param {Array}    [skipDir] - An array of directory names to skip walking.
     *
     * @returns {any}
     */
