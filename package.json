@@ -1,0 +1,30 @@
+{
+  "name": "@typhonjs-node-bundle/oclif-commons",
+  "description": "Provides common code for all TyphonJS Oclif based bundlers",
+  "version": "0.0.0",
+  "author": "typhonrt",
+  "private": true,
+  "bugs": "https://github.com/typhonjs-node-bundle/oclif-commons/issues",
+  "dependencies": {
+    "@oclif/command": "^1.0.0",
+    "dotenv": "^8.0.0"
+  },
+  "devDependencies": {
+    "typhonjs-config-eslint": "^0.6.0"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "files": [
+    "/npm-shrinkwrap.json",
+    "/src"
+  ],
+  "homepage": "https://github.com/typhonjs-node-bundle/oclif-commons",
+  "keywords": [
+    "oclif"
+  ],
+  "license": "MPL-2.0",
+  "main": "src/index.js",
+  "repository": "typhonjs-node-bundle/oclif-commons",
+  "scripts": {}
+}
