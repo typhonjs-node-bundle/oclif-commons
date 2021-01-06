@@ -152,7 +152,7 @@ class FileUtil
     * @param {string[]} extensions - An array of extensions to attach to `baseFileName`.
     * @param {string}   [errorMessage] - A message to prefix to any generated errors.
     *
-    * @returns {null|{absFilePath: string, extension: *, fileName: string, data: *, shortPath, baseFileName}}
+    * @returns {null|{absFilePath: string, extension: *, fileName: string, data: *, relativePath, baseFileName}}
     */
    static openFiles(basePath, baseFileName, extensions = [], errorMessage = '')
    {
@@ -194,7 +194,7 @@ class FileUtil
     * @param {string[]} extensions - An array of extensions to attach to `baseFileName`.
     * @param {string}   [errorMessage] - A message to prefix to any generated errors.
     *
-    * @returns {{absFilePath: string, extension: *, fileName: string, data: *, shortPath, baseFileName}|null}
+    * @returns {{absFilePath: string, extension: *, fileName: string, data: *, relativePath, baseFileName}|null}
     */
    static openLocalConfigs(baseFileName, extensions = [], errorMessage = '')
    {
