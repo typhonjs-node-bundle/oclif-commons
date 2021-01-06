@@ -16,7 +16,7 @@ class NonFatalError extends Error
    {
       super(message);
 
-      this.$$bundler_fatal = false;
+      this.$$error_fatal = false;
 
       // Sanitize incoming data.
       let logEvent = 'log:error';
