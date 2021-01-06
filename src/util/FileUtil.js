@@ -285,7 +285,7 @@ class FileUtil
     *
     * @ignore
     */
-   onPluginLoad(ev)
+   static onPluginLoad(ev)
    {
       const eventbus = ev.eventbus;
 
