@@ -171,13 +171,13 @@ class FileUtil
                   data: require(absFilePath),
                   extension,
                   fileName,
-                  relativePath: FileUtil.getRelativePath(basePath, absFilePath)
+                  relativePath: FileUtil.getRelativePath(global.$$bundler_origCWD, absFilePath)
                }
             }
             catch(err)
             {
                global.$$eventbus.trigger('log:warn',
-                `${errorMessage}${err.message}:\n${FileUtil.getRelativePath(basePath, absFilePath)}`);
+                `${errorMessage}${err.message}:\n${FileUtil.getRelativePath(global.$$bundler_origCWD, absFilePath)}`);
 
                return null;
             }
@@ -274,6 +274,32 @@ class FileUtil
             yield entry;
          }
       }
+   }
+
+   /**
+    * Wires up FlagHandler on the plugin eventbus.
+    *
+    * @param {PluginEvent} ev - The plugin event.
+    *
+    * @see https://www.npmjs.com/package/typhonjs-plugin-manager
+    *
+    * @ignore
+    */
+   onPluginLoad(ev)
+   {
+      const eventbus = ev.eventbus;
+
+      eventbus.on(`typhonjs:oclif:system:file:util:list:dir:get`, FileUtil.getDirList, FileUtil);
+      eventbus.on(`typhonjs:oclif:system:file:util:list:file:get`, FileUtil.getFileList, FileUtil);
+      eventbus.on(`typhonjs:oclif:system:file:util:path:relative:get`, FileUtil.getRelativePath, FileUtil);
+      eventbus.on(`typhonjs:oclif:system:file:util:config:babel:has`, FileUtil.hasBabelConfig, FileUtil);
+      eventbus.on(`typhonjs:oclif:system:file:util:config:typescript:has`, FileUtil.hasTscConfig, FileUtil);
+      eventbus.on(`typhonjs:oclif:system:file:util:is:js`, FileUtil.isJS, FileUtil);
+      eventbus.on(`typhonjs:oclif:system:file:util:is:ts`, FileUtil.isTS, FileUtil);
+      eventbus.on(`typhonjs:oclif:system:file:util:files:open`, FileUtil.openFiles, FileUtil);
+      eventbus.on(`typhonjs:oclif:system:file:util:configs:local:open`, FileUtil.openLocalConfigs, FileUtil);
+      eventbus.on(`typhonjs:oclif:system:file:util:dir:walk`, FileUtil.walkDir, FileUtil);
+      eventbus.on(`typhonjs:oclif:system:file:util:files:walk`, FileUtil.walkFiles, FileUtil);
    }
 }
 
