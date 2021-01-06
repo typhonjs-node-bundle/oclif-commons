@@ -54,6 +54,29 @@ class FileUtil
    }
 
    /**
+    * Given a base path and a file path this method will return a relative path if the file path includes the base
+    * path otherwise the full absolute file path is returned.
+    *
+    * @param basePath
+    * @param filePath
+    *
+    * @returns {string|string}
+    */
+   static getRelativePath(basePath, filePath)
+   {
+      let returnPath = filePath;
+
+      // Get the relative path and append `./` if necessary.
+      if (filePath.startsWith(basePath))
+      {
+         returnPath = path.relative(basePath, filePath);
+         returnPath = returnPath.startsWith('.') ? returnPath : `.${path.sep}${returnPath}`;
+      }
+
+      return returnPath;
+   }
+
+   /**
     * Searches all files from starting directory skipping any directories in `skipDir` and those starting with `.`
     * in an attempt to locate a Babel configuration file. If a Babel configuration file is found `true` is
     * immediately returned.
@@ -119,6 +142,75 @@ class FileUtil
    static isTS(extension)
    {
       return s_EXT_TS.has(extension);
+   }
+
+   /**
+    * Attempts to open `basePath/baseFileName[extensions]` until a file successfully loads.
+    *
+    * @param {string}   basePath - The base file path.
+    * @param {string}   baseFileName - The base file name without extension.
+    * @param {string[]} extensions - An array of extensions to attach to `baseFileName`.
+    * @param {string}   [errorMessage] - A message to prefix to any generated errors.
+    *
+    * @returns {null|{absFilePath: string, extension: *, fileName: string, data: *, shortPath, baseFileName}}
+    */
+   static openFiles(basePath, baseFileName, extensions = [], errorMessage = '')
+   {
+      for (const extension of extensions)
+      {
+         const fileName = `${baseFileName}${extension}`;
+         const absFilePath = `${basePath}${path.sep}${fileName}`;
+
+         if (fs.existsSync(absFilePath))
+         {
+            try
+            {
+               return {
+                  absFilePath,
+                  baseFileName,
+                  data: require(absFilePath),
+                  extension,
+                  fileName,
+                  relativePath: FileUtil.getRelativePath(basePath, absFilePath)
+               }
+            }
+            catch(err)
+            {
+               global.$$eventbus.trigger('log:warn',
+                `${errorMessage}${err.message}:\n${FileUtil.getRelativePath(basePath, absFilePath)}`);
+
+               return null;
+            }
+         }
+      }
+
+      return null;
+   }
+
+   /**
+    * Attempts to open local configuration files first in the modified CWD if applicable before the original CWD.
+    *
+    * @param {string}   baseFileName - The base file name without extension.
+    * @param {string[]} extensions - An array of extensions to attach to `baseFileName`.
+    * @param {string}   [errorMessage] - A message to prefix to any generated errors.
+    *
+    * @returns {{absFilePath: string, extension: *, fileName: string, data: *, shortPath, baseFileName}|null}
+    */
+   static openLocalConfigs(baseFileName, extensions = [], errorMessage = '')
+   {
+      // Attempt to load from CWD path if it is not the original CWD.
+      if (global.$$bundler_baseCWD !== global.$$bundler_origCWD)
+      {
+         const data = FileUtil.openFiles(global.$$bundler_baseCWD, baseFileName, extensions, errorMessage);
+
+         if (data !== null)
+         {
+            return data;
+         }
+      }
+
+      // Attempt to load from original CWD path.
+      return FileUtil.openFiles(global.$$bundler_origCWD, baseFileName, extensions, errorMessage);
    }
 
    /**
