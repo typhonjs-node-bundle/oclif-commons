@@ -3,7 +3,7 @@
  * flow and may provide an appropriate log level for typhonjs-color-logger ('fatal', 'error', 'warn', 'info',
  * 'verbose', 'debug', 'trace').
  */
-class NonFatalError extends Error
+export class NonFatalError extends Error
 {
    /**
     * Stores a message and defines optional log level and error code.
@@ -104,5 +104,3 @@ class NonFatalError extends Error
       this.$$errorCode = errorCode;
    }
 }
-
-module.exports = NonFatalError;

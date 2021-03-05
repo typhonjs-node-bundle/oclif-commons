@@ -1,4 +1,2 @@
-// Errors
-const NonFatalError  = require('./error/NonFatalError');
-
-exports.NonFatalError = NonFatalError;
+export * from './command/DynamicCommand.js';
+export * from './error/NonFatalError.js';

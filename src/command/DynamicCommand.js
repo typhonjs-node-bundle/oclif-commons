@@ -1,15 +1,15 @@
-const fs             = require('fs');
-const path           = require('path');
+import fs                  from 'fs';
+import path                from 'path';
 
-const { Command }    = require('@oclif/command');
-const dotenv         = require('dotenv');
+import { Command }         from '@oclif/command';
+import dotenv              from 'dotenv';
 
-const { NonFatalError } = require('@typhonjs-node-bundle/oclif-commons');
+import { NonFatalError }   from '../error/NonFatalError.js';
 
 /**
  * Provides default handling for TyphonJS dynamic command initialization of flags from Oclif plugins.
  */
-class DynamicCommand extends Command
+export class DynamicCommand extends Command
 {
    /**
     * Attempts to load environment variables from a *.env file w/ `dotenv`. Many flags have defaults, but also can be
@@ -114,5 +114,3 @@ class DynamicCommand extends Command
       return flags;
    }
 }
-
-module.exports = DynamicCommand;

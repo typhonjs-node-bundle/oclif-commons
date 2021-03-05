@@ -5,6 +5,7 @@
   "author": "typhonrt",
   "private": true,
   "bugs": "https://github.com/typhonjs-node-bundle/oclif-commons/issues",
+  "type": "module",
   "dependencies": {
     "@oclif/command": "^1.0.0",
     "dotenv": "^8.0.0"
@@ -14,7 +15,7 @@
     "typhonjs-config-eslint": "^0.6.0"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=14.0.0"
   },
   "files": [
     "/npm-shrinkwrap.json",
